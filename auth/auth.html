@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ImageCraft Pro | Auth</title>
+    <link rel="shortcut icon" href="../logo.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C4DF6;
+            --primary-light: rgba(108, 77, 246, 0.2);
+            --dark: #0F0F1A;
+            --darker: #07070F;
+            --light: #FFFFFF;
+            --gray: #6C757D;
+            --light-gray: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .auth-container {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid var(--light-gray);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .pro-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 1rem;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .auth-header p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #c4c4ff;
+        }
+
+        .form-group input {
+            background: var(--darker);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 12px 16px;
+            color: var(--light);
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            font-size: 15px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .auth-submit {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .auth-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 77, 246, 0.4);
+        }
+
+        .auth-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-login {
+            margin-top: 20px;
+        }
+
+        .social-login p {
+            margin-bottom: 15px;
+            position: relative;
+            text-align: center;
+            font-size: 14px;
+            color: #c4c4ff;
+        }
+
+        .social-login p::before,
+        .social-login p::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: var(--light-gray);
+        }
+
+        .social-login p::before {
+            left: 0;
+        }
+
+        .social-login p::after {
+            right: 0;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--darker);
+            border: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            margin: 1rem 0;
+            text-align: center;
+            display: none;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 80, 80, 0.2);
+            border: 1px solid rgba(255, 80, 80, 0.3);
+        }
+
+        .success-message {
+            color: #80ffa0;
+            margin: 1rem 0;
+            text-align: center;
+            display: none;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(80, 255, 150, 0.2);
+            border: 1px solid rgba(80, 255, 150, 0.3);
+        }
+
+        /* View management */
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* Profile View */
+        .profile-view {
+            text-align: left;
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .profile-pic-container {
+            position: relative;
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+        }
+
+        .edit-photo-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .edit-profile-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 5px;
+            text-decoration: underline;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .activity-card {
+            background: var(--glass);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .activity-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .activity-item i {
+            color: var(--primary);
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Edit Profile Form */
+        #editProfileForm {
+            background: var(--darker);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            border: 1px solid var(--light-gray);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--light-gray);
+            padding: 12px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .secondary-btn:hover {
+            background: var(--light-gray);
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .toggle-view {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .switch-form {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .switch-form a {
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                padding: 30px 20px;
+            }
+            .auth-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Login View -->
+        <div class="view" id="loginView">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <span>ImageCraft</span>
+                    <span class="pro-badge">PRO</span>
+                </div>
+                <h2>Welcome Back</h2>
+                <p>Login to access your account</p>
+            </div>
+            <div id="login-error" class="error-message"></div>
+            <div id="login-success" class="success-message"></div>
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe"> Remember me
+                    </label>
+                    <button type="button" class="forgot-password toggle-view" data-view="reset">Forgot password?</button>
+                </div>
+                <button type="submit" class="auth-submit">Login</button>
+            </form>
+            <div class="social-login">
+                <p>Or login with:</p>
+                <div class="social-icons">
+                    <a href="#" id="googleSignIn" class="social-icon"><i class="fab fa-google"></i></a>
+                </div>
+            </div>
+            <div class="switch-form">
+                Don't have an account? <button class="toggle-view" data-view="signup">Sign up</button>
+            </div>
+        </div>
+
+        <!-- Signup View -->
+        <div class="view" id="signupView">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <span>ImageCraft</span>
+                    <span class="pro-badge">PRO</span>
+                </div>
+                <h2>Create Account</h2>
+                <p>Get started with ImageCraft Pro</p>
+            </div>
+            <div id="signup-error" class="error-message"></div>
+            <div id="signup-success" class="success-message"></div>
+            <form class="auth-form" id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Create a password (min 6 chars)" required minlength="6">
+                </div>
+                <button type="submit" class="auth-submit">Sign Up</button>
+            </form>
+            <div class="social-login">
+                <p>Or sign up with:</p>
+                <div class="social-icons">
+                    <a href="#" id="googleSignUp" class="social-icon"><i class="fab fa-google"></i></a>
+                </div>
+            </div>
+            <div class="switch-form">
+                Already have an account? <button class="toggle-view" data-view="login">Back to Login</button>
+            </div>
+        </div>
+
+        <!-- Reset View -->
+        <div class="view" id="resetView">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <span>ImageCraft</span>
+                    <span class="pro-badge">PRO</span>
+                </div>
+                <h2>Reset Password</h2>
+                <p>Enter your email to receive a reset link</p>
+            </div>
+            <div id="reset-error" class="error-message"></div>
+            <div id="reset-success" class="success-message"></div>
+            <form class="auth-form" id="resetForm">
+                <div class="form-group">
+                    <label for="resetEmail">Email</label>
+                    <input type="email" id="resetEmail" placeholder="Your account email" required>
+                </div>
+                <button type="submit" class="auth-submit">Send Reset Link</button>
+            </form>
+            <div class="switch-form">
+                <button class="toggle-view" data-view="login">Back to Login</button>
+            </div>
+        </div>
+
+        <!-- Profile View -->
+        <div class="view" id="profileView">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <span>ImageCraft</span>
+                    <span class="pro-badge">PRO</span>
+                </div>
+                <h2>Your Dashboard</h2>
+            </div>
+
+            <div class="profile-header">
+                <div class="profile-pic-container">
+                    <img id="userPhoto" class="profile-pic" src="default-user.png">
+                    <button class="edit-photo-btn" id="editPhotoBtn">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+                <div class="profile-info">
+                    <h2 id="userName">User Name</h2>
+                    <p id="userEmail">user@example.com</p>
+                    <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
+                </div>
+            </div>
+
+            <!-- Edit Profile Form (Hidden by Default) -->
+            <form id="editProfileForm" class="hidden">
+                <div class="form-group">
+                    <label>Display Name</label>
+                    <input type="text" id="displayNameInput" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Profile Photo URL</label>
+                    <input type="url" id="photoUrlInput" class="form-control" placeholder="https://example.com/photo.jpg">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="cancelEditBtn" class="secondary-btn">Cancel</button>
+                    <button type="submit" class="auth-submit">Save Changes</button>
+                </div>
+            </form>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Projects</h3>
+                    <div class="stat-value">12</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Storage Used</h3>
+                    <div class="stat-value">3.2GB</div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-card">
+                <h3>Recent Activity</h3>
+                <div class="activity-item">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Logged in just now</span>
+                </div>
+                <div class="activity-item">
+                    <i class="fas fa-image"></i>
+                    <span>Processed 5 images</span>
+                </div>
+                <div class="activity-item">
+                    <i class="fas fa-download"></i>
+                    <span>Exported 3 projects</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <button id="signOutBtn" class="secondary-btn full-width">
+                <i class="fas fa-sign-out-alt"></i> Sign Out
+            </button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDxgWYpPT3pkIzYGEIm6OBbu5pwQ8ADNr4",
+            authDomain: "image-craft-pro-login.firebaseapp.com",
+            projectId: "image-craft-pro-login",
+            storageBucket: "image-craft-pro-login.appspot.com",
+            messagingSenderId: "8659327561",
+            appId: "1:8659327561:web:80b62740b54153a9f1fd98"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // View management
+            const views = {
+                login: document.getElementById('loginView'),
+                signup: document.getElementById('signupView'),
+                reset: document.getElementById('resetView'),
+                profile: document.getElementById('profileView')
+            };
+
+            function showView(viewName) {
+                // Hide all views
+                Object.values(views).forEach(view => {
+                    view.classList.remove('active');
+                });
+                // Show selected view
+                if (views[viewName]) {
+                    views[viewName].classList.add('active');
+                }
+            }
+
+            // Check URL parameters for initial view
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialView = urlParams.get('view');
+            showView(initialView || 'login');
+
+            // Toggle between views
+            document.querySelectorAll('.toggle-view').forEach(button => {
+                button.addEventListener('click', function() {
+                    showView(this.dataset.view);
+                });
+            });
+
+            // Auth state listener
+            firebase.auth().onAuthStateChanged(user => {
+                if (user) {
+                    // User is signed in
+                    document.getElementById('userName').textContent = user.displayName || user.email.split('@')[0];
+                    document.getElementById('userEmail').textContent = user.email;
+                    if (user.photoURL) {
+                        document.getElementById('userPhoto').src = user.photoURL;
+                    }
+                    showView('profile');
+                    
+                    // Send auth success message to opener
+                    if (window.opener) {
+                        window.opener.postMessage({
+                            type: 'AUTH_SUCCESS',
+                            user: {
+                                email: user.email,
+                                name: user.displayName || user.email.split('@')[0],
+                                photoURL: user.photoURL
+                            }
+                        }, '*');
+                    }
+                } else {
+                    // No user is signed in
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const initialView = urlParams.get('view');
+                    showView(initialView || 'login');
+                }
+            });
+
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('rememberMe').checked;
+                
+                try {
+                    const persistence = rememberMe ? 
+                        firebase.auth.Auth.Persistence.LOCAL : 
+                        firebase.auth.Auth.Persistence.SESSION;
+                    
+                    await firebase.auth().setPersistence(persistence);
+                    await firebase.auth().signInWithEmailAndPassword(email, password);
+                } catch (error) {
+                    showError('login-error', error.message);
+                }
+            });
+
+            // Signup form
+            document.getElementById('signupForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                const name = document.getElementById('signupName').value;
+                
+                try {
+                    const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                    await userCredential.user.updateProfile({ displayName: name });
+                    await userCredential.user.sendEmailVerification();
+                    showSuccess('signup-success', "Verification email sent! Please check your inbox.");
+                } catch (error) {
+                    showError('signup-error', error.message);
+                }
+            });
+
+            // Password reset
+            document.getElementById('resetForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const email = document.getElementById('resetEmail').value;
+                
+                try {
+                    await firebase.auth().sendPasswordResetEmail(email);
+                    showSuccess('reset-success', "Password reset email sent! Check your inbox.");
+                } catch (error) {
+                    showError('reset-error', error.message);
+                }
+            });
+
+            // Google sign-in (for login)
+            document.getElementById('googleSignIn').addEventListener('click', async function(e) {
+                e.preventDefault();
+                const provider = new firebase.auth.GoogleAuthProvider();
+                
+                try {
+                    await firebase.auth().signInWithPopup(provider);
+                } catch (error) {
+                    showError('login-error', error.message);
+                }
+            });
+
+            // Google sign-up (for signup)
+            document.getElementById('googleSignUp').addEventListener('click', async function(e) {
+                e.preventDefault();
+                const provider = new firebase.auth.GoogleAuthProvider();
+                
+                try {
+                    await firebase.auth().signInWithPopup(provider);
+                } catch (error) {
+                    showError('signup-error', error.message);
+                }
+            });
+
+            // Edit Profile Toggle
+            document.getElementById('editProfileBtn').addEventListener('click', function() {
+                const user = firebase.auth().currentUser;
+                document.getElementById('displayNameInput').value = user.displayName || '';
+                document.getElementById('photoUrlInput').value = user.photoURL || '';
+                document.getElementById('editProfileForm').classList.remove('hidden');
+            });
+
+            // Cancel Edit
+            document.getElementById('cancelEditBtn').addEventListener('click', function() {
+                document.getElementById('editProfileForm').classList.add('hidden');
+            });
+
+            // Save Profile Changes
+            document.getElementById('editProfileForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const user = firebase.auth().currentUser;
+                
+                try {
+                    await user.updateProfile({
+                        displayName: document.getElementById('displayNameInput').value,
+                        photoURL: document.getElementById('photoUrlInput').value || null
+                    });
+                    
+                    // Update UI
+                    document.getElementById('userName').textContent = 
+                        user.displayName || user.email.split('@')[0];
+                    if (user.photoURL) {
+                        document.getElementById('userPhoto').src = user.photoURL;
+                    }
+                    
+                    document.getElementById('editProfileForm').classList.add('hidden');
+                    showSuccess('profile-success', "Profile updated successfully!");
+                } catch (error) {
+                    showError('profile-error', error.message);
+                }
+            });
+
+            // Sign out
+            document.getElementById('signOutBtn').addEventListener('click', function() {
+                firebase.auth().signOut();
+            });
+
+            // Error display
+            function showError(elementId, message) {
+                const errorEl = document.getElementById(elementId);
+                if (errorEl) {
+                    errorEl.textContent = message;
+                    errorEl.style.display = 'block';
+                    setTimeout(() => {
+                        errorEl.style.display = 'none';
+                    }, 5000);
+                }
+            }
+
+            // Success display
+            function showSuccess(elementId, message) {
+                const successEl = document.getElementById(elementId);
+                if (successEl) {
+                    successEl.textContent = message;
+                    successEl.style.display = 'block';
+                    setTimeout(() => {
+                        successEl.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
