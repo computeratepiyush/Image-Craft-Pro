@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools | ImageCraft Pro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern Reset with Dark Theme */
+        :root {
+            --primary: #6C4DF6;
+            --primary-light: rgba(108, 77, 246, 0.2);
+            --dark: #0F0F1A;
+            --darker: #07070F;
+            --light: #FFFFFF;
+            --gray: #6C757D;
+            --light-gray: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* Spline 3D Container */
+        #spline-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Enhanced Glass Navigation */
+        .glass-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--light-gray);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .pro-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            position: relative;
+            padding: 8px 0;
+            transition: var(--transition);
+            color: var(--light);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            color: var (--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Enhanced Buttons */
+        .primary-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 77, 246, 0.4);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--light-gray);
+            padding: 12px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .secondary-btn:hover {
+            background: var(--light-gray);
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            color: var(--light);
+        }
+
+        /* Tools Hero Section */
+        .tools-hero {
+            padding: 150px 5% 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tools-hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tools-hero p {
+            color: var(--gray);
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 20%;
+            left: 10%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: #FF6BFF;
+            bottom: 10%;
+            right: 10%;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        /* Tools Categories */
+        .tools-categories {
+            padding: 80px 5%;
+            position: relative;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--light-gray);
+            border-radius: 30px;
+            color: var(--light);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .category-tab.active,
+        .category-tab:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 77, 246, 0.3);
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(108, 77, 246, 0.1), rgba(108, 77, 246, 0));
+            z-index: -1;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(108, 77, 246, 0.2);
+            border-color: var(--primary);
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(108, 77, 246, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .tool-card:hover .tool-icon {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tool-card p {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .tool-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(108, 77, 246, 0.2);
+            color: var(--primary);
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Footer Styles */
+        .footer {
+            position: relative;
+            padding: 80px 5% 40px;
+            background: var(--darker);
+            overflow: hidden;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .footer-description {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid var(--light-gray);
+            color: var(--gray);
+        }
+
+        .footer:hover .footer-bottom {
+            color: var(--primary);
+        }
+
+        /* Particle Effects */
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: var(--transition);
+        }
+
+        .footer:hover .particle {
+            opacity: 1;
+            transform: scale(1.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .tools-hero h1 {
+                font-size: 3rem;
+            }
+            
+            .category-tabs {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .glass-nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .tools-hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Background Element -->
+    <div id="spline-container"></div>
+    
+    <!-- Glassmorphism Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-logo">
+            <span>ImageCraft</span>
+            <span class="pro-badge">PRO</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="tools.html" class="active">Tools</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-actions">
+            <button class="secondary-btn" onclick="openAuthPopup('login')">Sign In</button>
+            <button class="primary-btn" onclick="openAuthPopup('signup')">Get Started</button>
+        </div>
+    </nav>
+
+    <!-- Tools Hero Section -->
+    <section class="tools-hero">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <h1>Powerful Tools for Perfect Images</h1>
+        <p>Discover our comprehensive suite of image processing tools designed to handle everything from basic adjustments to advanced transformations. All in one seamless workflow.</p>
+        <button class="primary-btn">Start Creating</button>
+    </section>
+
+    <!-- Tools Categories -->
+    <section class="tools-categories">
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="all">All Tools</div>
+            <div class="category-tab" data-category="enhancement">Enhancement</div>
+            <div class="category-tab" data-category="editing">Editing</div>
+            <div class="category-tab" data-category="effects">Effects</div>
+            <div class="category-tab" data-category="automation">Automation</div>
+        </div>
+        
+        <div class="tools-grid">
+            <!-- Tool Card 1 -->
+            <div class="tool-card" data-category="enhancement">
+                <div class="tool-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <span class="tool-badge">Enhancement</span>
+                <h3>AI Image Enhancer</h3>
+                <p>Automatically improve image quality, reduce noise, and enhance details with our advanced AI algorithms.</p>
+                <button class="secondary-btn">Try It Now</button>
+            </div>
+
+            <!-- Tool Card 2 -->
+            <div class="tool-card" data-category="editing">
+                <div class="tool-icon">
+                    <i class="fas fa-crop-alt"></i>
+                </div>
+                <span class="tool-badge">Editing</span>
+                <h3>Smart Cropper</h3>
+                <p>Intelligent cropping that suggests optimal compositions based on AI analysis of your image.</p>
+                <button class="secondary-btn">Try It Now</button>
+            </div>
+
+            <!-- Tool Card 3 -->
+            <div class="tool-card" data-category="effects">
+                <div class="tool-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <span class="tool-badge">Effects</span>
+                <h3>Artistic Filters</h3>
+                <p>Transform your photos into stunning artworks with our collection of AI-powered artistic filters.</p>
+                <button class="secondary-btn">Try It Now</button>
+            </div>
+
+            <!-- Tool Card 4 -->
+            <div class="tool-card" data-category="automation">
+                <div class="tool-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <span class="tool-badge">Automation</span>
+                <h3>Batch Processor</h3>
+                <p>Apply enhancements, resizing, and transformations to multiple images simultaneously.</p>
+                <button class="secondary-btn">Try It Now</button>
+            </div>
+
+            <!-- Tool Card 5 -->
+            <div class="tool-card" data-category="enhancement">
+                <div class="tool-icon">
+                    <i class="fas fa-eye-dropper"></i>
+                </div>
+                <span class="tool-badge">Enhancement</span>
+                <h3>Color Corrector</h3>
+                <p>Advanced color grading tools with automatic white balance and tone curve adjustments.</p>
+                <button class="secondary-btn">Try It Now</button>
+            </div>
+
+           <!-- Tool Card 6 -->
+<div class="tool-card" data-category="editing">
+    <div class="tool-icon">
+        <i class="fas fa-object-ungroup"></i>
+    </div>
+    <span class="tool-badge">Editing</span>
+    <h3>Background Remover</h3>
+    <p>Instantly remove backgrounds with precision using our AI-powered segmentation tool.</p>
+    <button class="secondary-btn">Try It Now</button>
+</div>
+
+            <!-- Tool Card 7 -->
+            <div class="tool-card" data-category="effects">
+                <div class="tool-icon">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <span class="tool-badge">Effects</span>
+                <h3>Night Mode Converter</h3>
+                <p>Transform daylight photos into realistic night scenes with proper lighting adjustments.</p>
+                <button class="secondary-btn">Try It Now</button>
+            </div>
+
+            <!-- Tool Card 8 -->
+            <div class="tool-card" data-category="automation">
+                <div class="tool-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <span class="tool-badge">Automation</span>
+                <h3>Smart Upscaler</h3>
+                <p>Increase image resolution up to 4x without losing quality using deep learning technology.</p>
+                <button class="secondary-btn">Try It Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="particle-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <span>ImageCraft</span>
+                    <span class="pro-badge">PRO</span>
+                </div>
+                <p class="footer-description">The most advanced all-in-one image processing platform designed for modern creators.</p>
+            </div>
+            <div class="footer-col">
+                <div class="footer-links">
+                    <h3>Pages</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="tools.html">Tools</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">API</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-links">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 ImageCraft Pro. All rights reserved.</p>
+        </div>
+        <div class="particles-container" id="footer-particles"></div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script>
+        // Category tabs functionality
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const toolCards = document.querySelectorAll('.tool-card');
+
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const category = tab.dataset.category;
+                toolCards.forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Parallax effect for floating shapes
+        gsap.to(".shape-1", {
+            y: 50,
+            scrollTrigger: {
+                trigger: ".tools-hero",
+                scrub: true
+            }
+        });
+
+        gsap.to(".shape-2", {
+            y: -50,
+            scrollTrigger: {
+                trigger: ".tools-hero",
+                scrub: true
+            }
+        });
+
+        // Particle effect for footer
+        function createParticles(containerId, count) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                container.appendChild(particle);
+
+                // Random properties
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 5 + 2;
+
+                particle.style.left = `${x}%`;
+                particle.style.top = `${y}%`;
+
+                gsap.to(particle, {
+                    opacity: 1,
+                    duration: duration,
+                    delay: delay,
+                    yoyo: true,
+                    repeat: -1,
+                    x: Math.random() * 50 - 25,
+                    y: Math.random() * 50 - 25,
+                    ease: 'power1.inOut'
+                });
+            }
+        }
+
+        // Initialize particles
+        createParticles('footer-particles', 50);
+
+        // Particle effect on mouse move
+        const footer = document.querySelector('.footer');
+        footer.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                const speed = particle.getAttribute('data-speed');
+                const x = (window.innerWidth - e.pageX * speed) / 100;
+                const y = (window.innerHeight - e.pageY * speed) / 100;
+
+                particle.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

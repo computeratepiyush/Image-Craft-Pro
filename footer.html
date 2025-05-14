@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer | ImageCraft Pro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C4DF6;
+            --primary-light: rgba(108, 77, 246, 0.2);
+            --dark: #0F0F1A;
+            --darker: #07070F;
+            --light: #FFFFFF;
+            --gray: #6C757D;
+            --light-gray: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .footer {
+            position: relative;
+            padding: 80px 5% 40px;
+            background: var(--darker);
+            overflow: hidden;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .footer-description {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid var(--light-gray);
+            color: var(--gray);
+        }
+
+        .footer:hover .footer-bottom {
+            color: var(--primary);
+        }
+
+        /* Particle Effects */
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: var(--transition);
+        }
+
+        .footer:hover .particle {
+            opacity: 1;
+            transform: scale(1.5);
+        }
+    </style>
+</head>
+<body>
+    <footer class="footer" id="particle-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <span>ImageCraft</span>
+                    <span class="pro-badge">PRO</span>
+                </div>
+                <p class="footer-description">The most advanced all-in-one image processing platform designed for modern creators.</p>
+            </div>
+            <div class="footer-col">
+                <div class="footer-links">
+                    <h3>Pages</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="tools.html">Tools</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">API</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-col">
+                <div class="footer-links">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 ImageCraft Pro. All rights reserved.</p>
+        </div>
+        <div class="particles-container" id="footer-particles"></div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script>
+        // Particle effect for footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const footer = document.getElementById('particle-footer');
+            const particlesContainer = document.getElementById('footer-particles');
+            const particles = [];
+            const particleCount = 30;
+
+            // Create particles
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particlesContainer.appendChild(particle);
+                particles.push({
+                    element: particle,
+                    x: Math.random() * 100,
+                    y: Math.random() * 100,
+                    size: Math.random() * 4 + 2,
+                    speed: Math.random() * 0.2 + 0.05,
+                    targetX: 0,
+                    targetY: 0,
+                    dx: 0,
+                    dy: 0
+                });
+            }
+
+            // Mouse move event
+            footer.addEventListener('mousemove', (e) => {
+                const rect = footer.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                particles.forEach(particle => {
+                    // Calculate direction to mouse
+                    particle.targetX = (mouseX / rect.width) * 100;
+                    particle.targetY = (mouseY / rect.height) * 100;
+
+                    // Calculate distance
+                    const distX = particle.targetX - particle.x;
+                    const distY = particle.targetY - particle.y;
+                    const distance = Math.sqrt(distX * distX + distY * distY);
+
+                    // Move particle
+                    if (distance < 30) {
+                        particle.dx = distX * particle.speed;
+                        particle.dy = distY * particle.speed;
+                        particle.element.style.opacity = 1 - (distance / 30);
+                        particle.element.style.transform = `translate(-50%, -50%) scale(${1 + (1 - distance/30)})`;
+                    } else {
+                        particle.dx *= 0.9;
+                        particle.dy *= 0.9;
+                        particle.element.style.opacity = 0;
+                    }
+                });
+            });
+
+            // Animation loop
+            function animateParticles() {
+                particles.forEach(particle => {
+                    particle.x += particle.dx;
+                    particle.y += particle.dy;
+
+                    // Apply movement
+                    particle.element.style.left = `${particle.x}%`;
+                    particle.element.style.top = `${particle.y}%`;
+                    particle.element.style.width = `${particle.size}px`;
+                    particle.element.style.height = `${particle.size}px`;
+                    particle.element.style.background = `hsl(${Math.random() * 60 + 240}, 80%, 65%)`;
+                });
+
+                requestAnimationFrame(animateParticles);
+            }
+
+            animateParticles();
+        });
+    </script>
+</body>
+</html>

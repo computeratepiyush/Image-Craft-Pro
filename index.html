@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageCraft Pro | Modern 3D Image Tools</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <!-- Spline Runtime -->
+    <script src="https://unpkg.com/@splinetool/runtime@1.0.42/build/spline-runtime.js"></script>
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    
+    <!-- 3D Background Element -->
+    <div id="spline-container"></div>
+    
+    <!-- Glassmorphism Navigation -->
+    <nav class="glass-nav" data-aos="fade-down">
+        <div class="nav-logo">
+            <span>ImageCraft</span>
+            <span class="pro-badge">PRO</span>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="/about.html">About</a>
+            <a href="/tools.html">Tools</a>
+            <a href="/pricing.html">Pricing</a>
+            <a href="/contacts.html">Contacts</a>
+        </div>
+        <div class="nav-actions">
+            <button class="secondary-btn" onclick="openAuthPopup('login')">Sign In</button>
+            <button class="primary-btn" onclick="openAuthPopup('signup')">Get Started</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content" data-aos="fade-right">
+            <div class="tag-box" data-aos="zoom-in">
+                <div class="tag">INTRODUCING</div>
+            </div>
+            <h1>IMAGE TOOLS <span>REIMAGINED</span></h1>
+            <p class="hero-description">Convert, compress and optimize images with our next-generation 3D interface</p>
+            <div class="cta-buttons">
+                <button class="primary-btn">Start Converting</button>
+                <button class="secondary-btn">Try Online</button>
+            </div>
+        </div>
+        <div class="hero-preview" data-aos="fade-left">
+            <div class="image-placeholder"></div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools-section">
+        <h2 data-aos="fade-up">OUR POWERFUL TOOLS</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">Everything you need for modern image processing</p>
+        
+        <div class="tool-grid">
+            <!-- Compression Tool -->
+            <div class="tool-card" data-aos="zoom-in">
+                <div class="tool-icon">🖼️</div>
+                <h3>Smart Compression</h3>
+                <p>Reduce file size without quality loss</p>
+                <button class="tool-btn">Try Now</button>
+            </div>
+            
+            <!-- Conversion Tool -->
+            <div class="tool-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="tool-icon">🔄</div>
+                <h3>Format Conversion</h3>
+                <p>Convert between JPG, PNG, WebP</p>
+                <button class="tool-btn">Try Now</button>
+            </div>
+            
+            <!-- PDF Tool -->
+            <div class="tool-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="tool-icon">📄</div>
+                <h3>Image to PDF</h3>
+                <p>Create PDFs from images</p>
+                <button class="tool-btn">Try Now</button>
+            </div>
+            
+            <!-- WebP Tool -->
+            <div class="tool-card" data-aos="zoom-in" data-aos-delay="300">
+                <div class="tool-icon">🌐</div>
+                <h3>WebP Tools</h3>
+                <p>Optimize for modern web</p>
+                <button class="tool-btn">Try Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="workflow">
+        <h2 data-aos="fade-up">HOW IT WORKS</h2>
+        <div class="steps">
+            <div class="step" data-aos="fade-up" data-aos-delay="100">
+                <div class="step-number">1</div>
+                <h3>Upload</h3>
+                <p>Drag & drop your images</p>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="200">
+                <div class="step-number">2</div>
+                <h3>Process</h3>
+                <p>Choose your settings</p>
+            </div>
+            <div class="step" data-aos="fade-up" data-aos-delay="300">
+                <div class="step-number">3</div>
+                <h3>Download</h3>
+                <p>Get optimized files</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="script.js"></script>
+    <!-- Login Popup Container -->
+</body>
+</html>

@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | ImageCraft Pro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern Reset with Dark Theme */
+        :root {
+            --primary: #6C4DF6;
+            --primary-light: rgba(108, 77, 246, 0.2);
+            --dark: #0F0F1A;
+            --darker: #07070F;
+            --light: #FFFFFF;
+            --gray: #6C757D;
+            --light-gray: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.05);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* Spline 3D Container */
+        #spline-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Enhanced Glass Navigation */
+        .glass-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--light-gray);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .pro-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            position: relative;
+            padding: 8px 0;
+            transition: var(--transition);
+            color: var(--light);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Enhanced Buttons */
+        .primary-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 77, 246, 0.4);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--light-gray);
+            padding: 12px 28px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .secondary-btn:hover {
+            background: var(--light-gray);
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            color: var(--light);
+        }
+
+        /* About Hero Section */
+        .about-hero {
+            padding: 150px 5% 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-hero p {
+            color: var(--gray);
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 20%;
+            left: 10%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: #FF6BFF;
+            bottom: 10%;
+            right: 10%;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        /* Founder Section */
+        .founder-section {
+            padding: 120px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .founder-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .founder-image-container {
+            flex: 1;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .founder-card {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .founder-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .founder-front, .founder-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .founder-front {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        .founder-front:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(108, 77, 246, 0.3);
+        }
+
+        .founder-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .founder-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--darker);
+            color: var(--gray);
+            font-size: 1.2rem;
+        }
+
+        .founder-back {
+            background: var(--darker);
+            transform: rotateY(180deg);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid var(--primary);
+            box-shadow: 0 20px 50px rgba(108, 77, 246, 0.3);
+        }
+
+        .founder-back h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+
+        .founder-back .role {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--dark);
+            border: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.2rem;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        .founder-card.flipped .social-link {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .founder-card.flipped .social-link:nth-child(1) {
+            transition-delay: 0.1s;
+        }
+        .founder-card.flipped .social-link:nth-child(2) {
+            transition-delay: 0.2s;
+        }
+        .founder-card.flipped .social-link:nth-child(3) {
+            transition-delay: 0.3s;
+        }
+        .founder-card.flipped .social-link:nth-child(4) {
+            transition-delay: 0.4s;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px) scale(1.1);
+            border-color: var(--primary);
+            box-shadow: 0 10px 20px rgba(108, 77, 246, 0.3);
+        }
+
+        .founder-content {
+            flex: 1;
+        }
+
+        .founder-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .founder-content p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            padding: 120px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .mission-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(108, 77, 246, 0.1), rgba(108, 77, 246, 0));
+            z-index: -1;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(108, 77, 246, 0.2);
+            border-color: var(--primary);
+        }
+
+        .mission-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .mission-card p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .mission-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: linear-gradient(to right, var(--primary), #8E6CF6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 120px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(108, 77, 246, 0.2);
+            border-color: var(--primary);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), #8E6CF6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .stat-number::after {
+            content: '+';
+            position: absolute;
+            top: 0;
+            right: -20px;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Section Header */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Parallax Background */
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .parallax-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.15;
+        }
+
+       /* Footer Styles */
+.footer {
+    position: relative;
+    padding: 80px 5% 40px;
+    background: var(--darker);
+    overflow: hidden;
+    border-top: 1px solid var(--light-gray);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: var(--light);
+}
+
+.footer-description {
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.footer-links h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: var(--light);
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: var(--gray);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-links a:hover {
+    color: var(--primary);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--light-gray);
+    color: var(--gray);
+}
+
+/* Particle Effects */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .about-hero h1 {
+                font-size: 3rem;
+            }
+            
+            .founder-container {
+                flex-direction: column;
+            }
+            
+            .founder-image-container, .founder-content {
+                width: 100%;
+            }
+            
+            .mission-grid {
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .glass-nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .about-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .mission-card {
+                padding: 30px;
+            }
+            
+            .founder-card {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Background Element -->
+    <div id="spline-container"></div>
+    
+    <!-- Glassmorphism Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-logo">
+            <span>ImageCraft</span>
+            <span class="pro-badge">PRO</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html" class="active">About</a>
+            <a href="tools.html">Tools</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-actions">
+            <button class="secondary-btn" onclick="openAuthPopup('login')">Sign In</button>
+            <button class="primary-btn" onclick="openAuthPopup('signup')">Get Started</button>
+        </div>
+    </nav>
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+        <h1>One Vision, One Platform</h1>
+        <p>ImageCraft Pro was created to solve a simple problem: why use multiple tools when one powerful platform can do it all? Our mission is to provide the most intuitive and comprehensive image processing experience.</p>
+        <button class="primary-btn">The Story Behind It</button>
+    </section>
+
+    <!-- Founder Section -->
+    <section class="founder-section">
+        <div class="founder-container">
+            <div class="founder-image-container">
+                <div class="founder-card" id="founderCard">
+                    <div class="founder-front">
+                        <div class="founder-placeholder">
+                            <span>Your Image Will Appear Here</span>
+                        </div>
+                        <!-- <img src="your-image.jpg" alt="Founder" class="founder-image"> -->
+                    </div>
+                    <div class="founder-back">
+                        <h3>Your Name</h3>
+                        <span class="role">Founder & Developer</span>
+                        <p>Connect with me on social media</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="founder-content">
+                <h2>The Solo Journey Behind ImageCraft Pro</h2>
+                <p>As a developer passionate about both design and technology, I noticed a gap in the market. <span class="highlight">Most image processing tools either had great features with terrible interfaces or beautiful UIs with limited functionality.</span> Worse yet, creatives had to juggle multiple applications to complete their workflow.</p>
+                
+                <p>I set out to create ImageCraft Pro with one goal in mind: <span class="highlight">build a single platform that combines powerful image processing capabilities with an intuitive, beautiful interface.</span> No more switching between apps, no more clunky interfaces that get in the way of creativity.</p>
+                
+                <p>What started as a side project quickly grew into a full-fledged platform. Every tool, every feature has been carefully designed and implemented to work seamlessly together. <span class="highlight">The result is a cohesive experience that lets you focus on your creativity rather than the tools.</span></p>
+                
+                <p>Today, ImageCraft Pro continues to evolve, driven by user feedback and the latest advancements in image processing technology. <span class="highlight">My commitment remains the same: to provide the most comprehensive yet intuitive image processing solution available.</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="parallax-bg" id="missionParallax"></div>
+        <div class="section-header">
+            <h2>Why ImageCraft Pro Stands Out</h2>
+            <p>Three core principles that guide everything we do</p>
+        </div>
+        <div class="mission-grid">
+            <div class="mission-card">
+                <div class="mission-icon">✨</div>
+                <h3>Unified Workflow</h3>
+                <p>No more switching between multiple apps. All the tools you need in one beautifully designed interface that works the way you do.</p>
+            </div>
+            <div class="mission-card">
+                <div class="mission-icon">⚡</div>
+                <h3>Power Meets Simplicity</h3>
+                <p>Advanced capabilities presented in an intuitive way. Professional results without the steep learning curve.</p>
+            </div>
+            <div class="mission-card">
+                <div class="mission-icon">❤️</div>
+                <h3>Built for Creatives</h3>
+                <p>Every feature designed with real creative workflows in mind. Tools that adapt to you, not the other way around.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="parallax-bg" id="statsParallax"></div>
+        <div class="section-header">
+            <h2>By The Numbers</h2>
+            <p>Our impact in the creative community since launch</p>
+        </div>
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number" data-count="500">0</div>
+                <div class="stat-label">Happy Creatives</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="15">0</div>
+                <div class="stat-label">Integrated Tools</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="99">0</div>
+                <div class="stat-label">Uptime %</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="2">0</div>
+                <div class="stat-label">Million Images Processed</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- Footer Section -->
+<footer class="footer" id="particle-footer">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <div class="footer-logo">
+                <span>ImageCraft</span>
+                <span class="pro-badge">PRO</span>
+            </div>
+            <p class="footer-description">Advanced image processing for professionals</p>
+        </div>
+        <div class="footer-col">
+            <div class="footer-links">
+                <h3>Tools</h3>
+                <ul>
+                    <li><a href="#">Image Converter</a></li>
+                    <li><a href="#">Compressor</a></li>
+                    <li><a href="#">Batch Processor</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-col">
+            <div class="footer-links">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2023 ImageCraft Pro. All rights reserved.</p>
+    </div>
+    <div class="particles-container" id="footer-particles"></div>
+</footer>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out-quart',
+            once: true,
+            offset: 100
+        });
+
+        // Founder card flip interaction with Huly.io-like animation
+        const founderCard = document.getElementById('founderCard');
+        if (founderCard) {
+            founderCard.addEventListener('click', function() {
+                this.classList.toggle('flipped');
+                
+                // Add pulse animation when flipping back
+                if (!this.classList.contains('flipped')) {
+                    const front = this.querySelector('.founder-front');
+                    front.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        front.style.transform = 'scale(1)';
+                    }, 300);
+                }
+            });
+            
+            // Hover effect
+            founderCard.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('flipped')) {
+                    const front = this.querySelector('.founder-front');
+                    front.style.transform = 'scale(1.02)';
+                    front.style.boxShadow = '0 10px 30px rgba(108, 77, 246, 0.3)';
+                }
+            });
+            
+            founderCard.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('flipped')) {
+                    const front = this.querySelector('.founder-front');
+                    front.style.transform = 'scale(1)';
+                    front.style.boxShadow = 'none';
+                }
+            });
+        }
+
+        // Parallax effect for mission section
+        gsap.to(".shape-1", {
+            y: 50,
+            scrollTrigger: {
+                trigger: ".mission-section",
+                scrub: true
+            }
+        });
+
+        gsap.to(".shape-2", {
+            y: -50,
+            scrollTrigger: {
+                trigger: ".mission-section",
+                scrub: true
+            }
+        });
+
+        // Create parallax elements
+        function createParallaxElements(containerId, count) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            for (let i = 0; i < count; i++) {
+                const element = document.createElement('div');
+                element.classList.add('parallax-element');
+                
+                // Random properties
+                const size = Math.random() * 200 + 50;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const color = i % 2 === 0 ? 'var(--primary)' : '#FF6BFF';
+                
+                element.style.width = `${size}px`;
+                element.style.height = `${size}px`;
+                element.style.left = `${x}%`;
+                element.style.top = `${y}%`;
+                element.style.background = color;
+                
+                container.appendChild(element);
+                
+                // Animate with scroll
+                gsap.to(element, {
+                    y: (i % 2 === 0 ? 1 : -1) * (Math.random() * 100 + 50),
+                    scrollTrigger: {
+                        trigger: `#${containerId}`,
+                        scrub: true
+                    }
+                });
+            }
+        }
+
+        // Initialize parallax elements
+        createParallaxElements('missionParallax', 8);
+        createParallaxElements('statsParallax', 6);
+
+        // Animated counter for stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            const speed = 200;
+            
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-count');
+                const count = +counter.innerText;
+                const increment = target / speed;
+                
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(animateCounters, 1);
+                } else {
+                    counter.innerText = target;
+                }
+            });
+        }
+
+        // Trigger counter animation when stats section is in view
+        ScrollTrigger.create({
+            trigger: ".stats-section",
+            start: "top 80%",
+            onEnter: animateCounters,
+            once: true
+        });
+
+        // Open auth popup
+        function openAuthPopup(type) {
+            const authWindow = window.open(
+                `auth/auth.html?view=${type}`, 
+                'AuthWindow',
+                'width=500,height=600,top=100,left=100'
+            );
+            
+            if (authWindow === null) {
+                alert('Please allow popups for this site to login.');
+            }
+        }
+
+        // Footer Particle Animation
+document.addEventListener('DOMContentLoaded', function() {
+    const footer = document.getElementById('particle-footer');
+    const particlesContainer = document.getElementById('footer-particles');
+    const particles = [];
+    const particleCount = 30;
+    
+    // Create particles
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particlesContainer.appendChild(particle);
+        particles.push({
+            element: particle,
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            size: Math.random() * 4 + 2,
+            speed: Math.random() * 0.2 + 0.05,
+            targetX: 0,
+            targetY: 0,
+            dx: 0,
+            dy: 0
+        });
+    }
+    
+    // Mouse move event
+    footer.addEventListener('mousemove', (e) => {
+        const rect = footer.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        particles.forEach(particle => {
+            // Calculate direction to mouse
+            particle.targetX = (mouseX / rect.width) * 100;
+            particle.targetY = (mouseY / rect.height) * 100;
+            
+            // Calculate distance
+            const distX = particle.targetX - particle.x;
+            const distY = particle.targetY - particle.y;
+            const distance = Math.sqrt(distX * distX + distY * distY);
+            
+            // Move particle
+            if (distance < 30) {
+                particle.dx = distX * particle.speed;
+                particle.dy = distY * particle.speed;
+                particle.element.style.opacity = 1 - (distance / 30);
+                particle.element.style.transform = `translate(-50%, -50%) scale(${1 + (1 - distance/30)})`;
+            } else {
+                particle.dx *= 0.9;
+                particle.dy *= 0.9;
+                particle.element.style.opacity = 0;
+            }
+        });
+    });
+    
+    // Animation loop
+    function animateParticles() {
+        particles.forEach(particle => {
+            particle.x += particle.dx;
+            particle.y += particle.dy;
+            
+            // Apply movement
+            particle.element.style.left = `${particle.x}%`;
+            particle.element.style.top = `${particle.y}%`;
+            particle.element.style.width = `${particle.size}px`;
+            particle.element.style.height = `${particle.size}px`;
+            particle.element.style.background = `hsl(${Math.random() * 60 + 240}, 80%, 65%)`;
+        });
+        
+        requestAnimationFrame(animateParticles);
+    }
+    
+    animateParticles();
+});
+    </script>
+</body>
+</html>
